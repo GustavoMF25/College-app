@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import url('assets/fontawesome-free/css/min.css'); */
 /* perfect scrollbar */
 @import 'perfect-scrollbar.min.css';
 
@@ -42,10 +47,6 @@
 
 /* dragndrop */
 @import 'dragndrop.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer components {
     html {

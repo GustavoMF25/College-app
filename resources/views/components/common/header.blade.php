@@ -3,8 +3,8 @@
         <div class="relative bg-white flex w-full items-center px-5 py-2.5">
             <div class="horizontal-logo flex lg:hidden justify-between items-center ltr:mr-2 rtl:ml-2">
                 <a href="/" class="main-logo flex items-center shrink-0">
-                    <img class="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="/assets/images/icon-colege.png" alt="image" />
-                    <span class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline transition-all duration-300">{{ config('app.name', '') }}</span>
+                    <img class="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="{{tenant('icone') ? tenant('icone') : '/assets/images/icon-colege.png'}}" alt="image" />
+                    <span class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline transition-all duration-300">{{ tenant('name') ? tenant('name') : config('app.name', '') }}</span>
                 </a>
 
                 <a href="javascript:;" class="collapse-icon flex-none hover:text-primary flex lg:hidden ltr:ml-2 rtl:mr-2 p-2 rounded-full bg-white-light/40 hover:bg-white-light/90" @click="$store.app.toggleSidebar()">
@@ -29,48 +29,6 @@
             </div>
             <div x-data="header" class="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse">
                 <div class="sm:ltr:mr-auto sm:rtl:ml-auto" x-data="{ search: false }" @click.outside="search = false">
-                    <!-- <form
-                        class="sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden"
-                        :class="{ '!block': search }" @submit.prevent="search = false">
-                        <div class="relative">
-                            <input type="text"
-                                class="form-input ltr:pl-9 rtl:pr-9 ltr:sm:pr-4 rtl:sm:pl-4 ltr:pr-9 rtl:pl-9 peer sm:bg-transparent bg-gray-100 placeholder:tracking-widest"
-                                placeholder="Search..." />
-                            <button type="button"
-                                class="absolute w-9 h-9 inset-0 ltr:right-auto rtl:left-auto appearance-none peer-focus:text-primary">
-                                <svg class="mx-auto" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor"
-                                        stroke-width="1.5" opacity="0.5" />
-                                    <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" />
-                                </svg>
-                            </button>
-                            <button type="button"
-                                class="hover:opacity-80 sm:hidden block absolute top-1/2 -translate-y-1/2 ltr:right-2 rtl:left-2"
-                                @click="search = false">
-                                </svg>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <circle opacity="0.5" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="1.5" />
-                                    <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                            </button>
-                        </div>
-                    </form>
-                    <button type="button"
-                        class="search_btn sm:hidden p-2 rounded-full bg-white-light/40 hover:bg-white-light/90"
-                        @click="search = ! search">
-                        <svg class="w-4.5 h-4.5 mx-auto" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor"
-                                stroke-width="1.5" opacity="0.5" />
-                            <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5"
-                                stroke-linecap="round" />
-                        </svg>
-                    </button> -->
                 </div>
 
 
@@ -254,14 +212,29 @@
                                 </svg>
                                 Lock Screen</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ trim(Auth::user()->name . " " . Auth::user()->sobrenome) }}
+                            </a>
+                            <div class="dropdown-menu dropdown-scroll" style="left: -70px" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    Sair
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         <li class="border-t border-white-light">
 
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" id="form-logout" action="{{route('logout')}}">
                                 @csrf
 
 
-                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                <x-dropdown-link href="#" onclick="event.preventDefault();
+                                                document.getElementById('form-logout').submit();">
                                     <div class="text-danger flex  items-center ">
                                         <svg class=" w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 rotate-90" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.5" d="M17 9.00195C19.175 9.01406 20.3529 9.11051 21.1213 9.8789C22 10.7576 22 12.1718 22 15.0002V16.0002C22 18.8286 22 20.2429 21.1213 21.1215C20.2426 22.0002 18.8284 22.0002 16 22.0002H8C5.17157 22.0002 3.75736 22.0002 2.87868 21.1215C2 20.2429 2 18.8286 2 16.0002L2 15.0002C2 12.1718 2 10.7576 2.87868 9.87889C3.64706 9.11051 4.82497 9.01406 7 9.00195" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

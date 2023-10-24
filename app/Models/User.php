@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'tenant_id',
         'password',
     ];
 
@@ -42,4 +43,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function tenant()
+    {
+        return $this->belongsTo("App\Models\Tenant", "tenant_id", "id");
+    }
 }
